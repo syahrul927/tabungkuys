@@ -48,12 +48,12 @@ const TransactionBottomSheet: React.FC<TransactionBottomSheetProps> = props => {
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
-          height: 12
+          height: 12,
         },
         shadowOpacity: 0.58,
         shadowRadius: 16.0,
 
-        elevation: 24
+        elevation: 24,
       }}
     >
       <View className="flex flex-col w-full justify-between px-6 h-full">

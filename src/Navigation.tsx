@@ -3,8 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { StatusBar } from "expo-status-bar"
 import { useColorScheme } from "nativewind"
 import { RootStackParamList } from "../type"
-import ButtonRetro from "./components/ButtonRetro"
-import HeaderHome from "./components/HeaderHome"
 import CardScreen from "./screen/CardScreen"
 import HomeScreen from "./screen/HomeScreen"
 
