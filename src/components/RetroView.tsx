@@ -5,16 +5,13 @@ interface RetroViewProps extends ViewProps {
   bg: string
 }
 const RetroView: React.FC<RetroViewProps> = props => {
-  const { children, className, bg, ...newProps } = props
+  const { children, bg, ...newProps } = props
   return (
     <View className="m-2">
       <View
         {...newProps}
-        className={`absolute w-full bg-black -translate-x-1 translate-y-1 `}
+        className={`${bg} border border-black border-l-4 border-b-4 shadow`}
       >
-        {children}
-      </View>
-      <View {...newProps} className={`${bg} border border-black`}>
         {children}
       </View>
     </View>

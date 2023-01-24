@@ -1,14 +1,16 @@
+import { FontAwesome } from "@expo/vector-icons"
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { TouchableOpacity, View, Text, ScrollView } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { RootStackParamList } from "../../type"
 import ButtonRetro from "../components/ButtonRetro"
-import MoneyCard from "../components/MoneyCard"
+import MoneyCard, { MoneyCardProps } from "../components/MoneyCard"
+import SafeLayout from "../components/SafeLayout"
 import TransactionBottomSheet from "../components/TransactionBottomSheet"
 import TransactionItem, {
   TransactionItemProps,
@@ -16,60 +18,75 @@ import TransactionItem, {
 
 const dataTransaction: TransactionItemProps[] = [
   {
-    amount: "200.000",
+    amount: "200000",
     type: "income",
     from: "Syahrul Ataufik",
     date: "04 Januari 2022 19:54",
   },
   {
-    amount: "130.000",
+    amount: "130000",
     type: "expense",
     from: "Syahrul Ataufik",
     date: "05 Januari 2022 13:17",
   },
   {
-    amount: "450.000",
+    amount: "450000",
     type: "income",
     from: "Ulfa Dwi Nurul Octa",
     date: "06 Januari 2022 16:27",
   },
   {
-    amount: "240.000",
+    amount: "240000",
     type: "income",
     from: "Ulfa Dwi Nurul Octa",
     date: "07 Januari 2022 12:45",
   },
   {
-    amount: "15.000",
+    amount: "15000",
     type: "expense",
     from: "Syahrul Ataufik",
     date: "08 Januari 2022 11:45",
   },
   {
-    amount: "520.000",
+    amount: "520000",
     type: "income",
     from: "Ulfa Dwi Nurul Octa",
     date: "08 Januari 2022 16:45",
   },
   {
-    amount: "20.000",
+    amount: "20000",
     type: "expense",
     from: "Ulfa Dwi Nurul Octa",
     date: "08 Januari 2022 16:45",
   },
   {
-    amount: "520.000",
+    amount: "520000",
     type: "income",
     from: "Ulfa Dwi Nurul Octa",
     date: "08 Januari 2022 16:45",
   },
 ]
+const dataCards: MoneyCardProps[] = [
+  {
+    name: "Bank Sendiri",
+    amount: "243500",
+    income: "3200000",
+    expense: "139900",
+  },
+  {
+    name: "Bank Baca",
+    amount: "1750000",
+    income: "2000000",
+    expense: "59000",
+  },
+]
 type Props = NativeStackScreenProps<RootStackParamList, "Home">
-const HomeScreen: React.FC<Props> = props => {
-  const { navigation } = props
+const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [bottomSheetType, setBottomSheetType] = useState<string>("Income")
   const bottomSheetRef = useRef<BottomSheetModal>(null)
 
+  const [cards, setCards] = useState<MoneyCardProps[]>([])
+  const [transactions, setTransactions] = useState<TransactionItemProps[]>([])
   const handlePresentModalPress = useCallback(() => {
     bottomSheetRef.current?.present()
   }, [])
@@ -77,8 +94,23 @@ const HomeScreen: React.FC<Props> = props => {
     setBottomSheetType(str)
     handlePresentModalPress()
   }
+  const renderCardItem = () => {
+    return cards.map(item => {
+      const id = (Math.random() + 1).toString(36).substring(7)
+      return (
+        <TouchableOpacity key={id}>
+          <MoneyCard
+            name={item.name}
+            amount={item.amount}
+            income={item.income}
+            expense={item.expense}
+          />
+        </TouchableOpacity>
+      )
+    })
+  }
   const renderListTransaction = () => {
-    return dataTransaction.map(item => {
+    return transactions.map(item => {
       const id = (Math.random() + 1).toString(36).substring(7)
       return (
         <TransactionItem
@@ -91,19 +123,36 @@ const HomeScreen: React.FC<Props> = props => {
       )
     })
   }
+  // Set UseEffect
+  useEffect(() => {
+    setCards(dataCards)
+    setTransactions(dataTransaction)
+  }, [])
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View className="flex pt-16 flex-col space-y-8 bg-slate-200 justify-start items-center h-full w-full dark:bg-slate-800">
+      <SafeLayout className="flex flex-col px-5 space-y-8 bg-slate-200 justify-start items-center h-full w-full dark:bg-slate-800">
+        <View className="flex flex-row justify-between items-center w-full ">
+          <Text className="text-3xl font-bold ">
+            Cards{" "}
+            <Text className="text-xs font-extralight">
+              ({dataCards.length})
+            </Text>
+          </Text>
+          <TouchableOpacity onPress={() => navigation.push("Card")}>
+            <FontAwesome name="plus-square-o" size={28} />
+          </TouchableOpacity>
+        </View>
         <BottomSheetModalProvider>
-          <View className="flex flex-row justify-center items-center w-full h-fit ">
-            <TouchableOpacity>
-              <MoneyCard
-                name={"TabungKuys"}
-                amount={"2.435.000"}
-                income={"3.200.000"}
-                expense={"1.399.000"}
-              />
-            </TouchableOpacity>
+          <View className="flex flex-row justify-center items-center w-full h-fit px-10 ">
+            <ScrollView
+              className="w-full"
+              horizontal // Change the direction to horizontal
+              pagingEnabled // Enable paging
+              decelerationRate={0} // Disable deceleration
+              snapToAlignment="center" // Snap to the center
+            >
+              {renderCardItem()}
+            </ScrollView>
           </View>
           <View className="flex flex-row justify-center w-full">
             <TouchableOpacity onPress={() => openBottomSheet("Income")}>
@@ -120,7 +169,7 @@ const HomeScreen: React.FC<Props> = props => {
                 <ButtonRetro bg="bg-yellow-400" title="View All" />
               </TouchableOpacity>
             </View>
-            <ScrollView className="flex flex-col px-5 w-full h-full mt-3 mb-4">
+            <ScrollView className="flex flex-col w-full h-full mt-3 mb-4">
               {renderListTransaction()}
             </ScrollView>
           </View>
@@ -129,7 +178,7 @@ const HomeScreen: React.FC<Props> = props => {
             type={bottomSheetType}
           />
         </BottomSheetModalProvider>
-      </View>
+      </SafeLayout>
     </GestureHandlerRootView>
   )
 }
