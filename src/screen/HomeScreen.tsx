@@ -192,7 +192,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
                 updateSelected={onChangeSelectedTrans}
               />
             </View>
-            <ScrollView className="flex flex-col w-full h-full mt-3 mb-4 bg-gray-100 rounded-lg">
+            <ScrollView className="flex flex-col w-full mt-3 mb-4 bg-gray-100 rounded-lg">
               {renderListTransaction()}
             </ScrollView>
           </View>

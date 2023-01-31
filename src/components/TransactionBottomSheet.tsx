@@ -1,10 +1,10 @@
 import { BottomSheetBackdrop, BottomSheetModal } from "@gorhom/bottom-sheet"
 import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types"
 import React, { useCallback, useMemo } from "react"
-import { Text, View, ViewProps } from "react-native"
+import { View } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import ButtonRetro from "./ButtonRetro"
-import InputBottomSheet from "./InputRetro"
+import InputBottomSheet from "./InputBottomSheet"
 
 interface TransactionBottomSheetProps {
   type: string

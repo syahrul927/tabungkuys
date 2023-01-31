@@ -1,19 +1,31 @@
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet"
+import { BottomSheetTextInputProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetTextInput"
 import React from "react"
-import { Text, TextInputProps, View } from "react-native"
+import { StyleSheet, Text, View } from "react-native"
 
-interface InputBottomSheetProps extends TextInputProps {
+interface InputBottomSheet extends BottomSheetTextInputProps {
   name: string
+  titleShow?: boolean
 }
-const InputBottomSheet: React.FC<InputBottomSheetProps> = props => {
-  const { name, ...textInputProps } = props
+const InputBottomSheet: React.FC<InputBottomSheet> = props => {
+  const { name, titleShow, ...textInputProps } = props
   return (
     <View className="flex space-y-2">
-      <Text className="text-lg font-bold capitalize">{name}</Text>
-      <View className="flex bg-white border-black border-2 rounded-full px-6 py-2 justify-center">
-        <BottomSheetTextInput {...textInputProps} className="text-lg" />
-      </View>
+      {titleShow && (
+        <Text className="text-lg font-bold capitalize">{name}</Text>
+      )}
+      <BottomSheetTextInput {...textInputProps} style={styles.textInput} />
     </View>
   )
 }
 export default InputBottomSheet
+const styles = StyleSheet.create({
+  textInput: {
+    display: "flex",
+    backgroundColor: "#e6e6e6",
+    borderRadius: 8,
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    justifyContent: "center",
+  },
+})

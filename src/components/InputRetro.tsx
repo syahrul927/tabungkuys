@@ -1,6 +1,5 @@
 import React from "react"
-import { Text, TextInputProps, View } from "react-native"
-import { TextInput } from "react-native-gesture-handler"
+import { Text, TextInput, TextInputProps, View } from "react-native"
 
 interface InputRetroProps extends TextInputProps {
   name: string
