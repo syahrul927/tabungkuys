@@ -5,16 +5,24 @@ import {
 } from "@gorhom/bottom-sheet"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { TouchableOpacity, View, Text, ScrollView } from "react-native"
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  ScrollView,
+  TouchableHighlight,
+  Dimensions,
+} from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { RootStackParamList } from "../../type"
-import ButtonRetro from "../components/ButtonRetro"
+import FilterTransactionType from "../components/FilterTransactionType"
 import MoneyCard, { MoneyCardProps } from "../components/MoneyCard"
 import SafeLayout from "../components/SafeLayout"
 import TransactionBottomSheet from "../components/TransactionBottomSheet"
 import TransactionItem, {
   TransactionItemProps,
 } from "../components/TransactionItem"
+import { TransactionType } from "../constanta/TransactionType"
 
 const dataTransaction: TransactionItemProps[] = [
   {
@@ -70,20 +78,20 @@ const dataCards: MoneyCardProps[] = [
   {
     name: "Bank Sendiri",
     amount: "243500",
-    income: "3200000",
-    expense: "139900",
   },
   {
     name: "Bank Baca",
     amount: "1750000",
-    income: "2000000",
-    expense: "59000",
   },
 ]
 type Props = NativeStackScreenProps<RootStackParamList, "Home">
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
+  const [selectedTrans, setSelectedTrans] = useState<string>(
+    TransactionType.ALL
+  )
   const [bottomSheetType, setBottomSheetType] = useState<string>("Income")
   const bottomSheetRef = useRef<BottomSheetModal>(null)
+  const { width } = Dimensions.get("window")
 
   const [cards, setCards] = useState<MoneyCardProps[]>([])
   const [transactions, setTransactions] = useState<TransactionItemProps[]>([])
@@ -94,18 +102,21 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     setBottomSheetType(str)
     handlePresentModalPress()
   }
+  const onChangeSelectedTrans = (str: string) => {
+    setSelectedTrans(str)
+  }
   const renderCardItem = () => {
     return cards.map(item => {
       const id = (Math.random() + 1).toString(36).substring(7)
       return (
-        <TouchableOpacity key={id}>
+        <TouchableHighlight key={id}>
           <MoneyCard
             name={item.name}
             amount={item.amount}
-            income={item.income}
-            expense={item.expense}
+            incomeAction={openBottomSheet}
+            expenseAction={openBottomSheet}
           />
-        </TouchableOpacity>
+        </TouchableHighlight>
       )
     })
   }
@@ -123,14 +134,24 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       )
     })
   }
+  const filterTransaction = useCallback(
+    (data: TransactionItemProps[]) => {
+      if (selectedTrans.toLowerCase() === "all") return data
+      return data.filter(item => item.type === selectedTrans)
+    },
+    [selectedTrans]
+  )
+
   // Set UseEffect
   useEffect(() => {
     setCards(dataCards)
-    setTransactions(dataTransaction)
   }, [])
+  useEffect(() => {
+    setTransactions(filterTransaction(dataTransaction))
+  }, [selectedTrans, filterTransaction])
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeLayout className="flex flex-col px-5 space-y-8 bg-slate-200 justify-start items-center h-full w-full dark:bg-slate-800">
+      <SafeLayout className="flex flex-col px-5 space-y-8 bg-white justify-start items-center h-full w-full dark:bg-slate-800">
         <View className="flex flex-row justify-between items-center w-full ">
           <Text className="text-3xl font-bold ">
             Cards{" "}
@@ -143,33 +164,35 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <BottomSheetModalProvider>
-          <View className="flex flex-row justify-center items-center w-full h-fit px-10 ">
+          <View className="flex flex-row justify-center mb-10 items-center w-full h-fit ">
             <ScrollView
-              className="w-full"
               horizontal // Change the direction to horizontal
               pagingEnabled // Enable paging
               decelerationRate={0} // Disable deceleration
+              snapToInterval={width - 60}
               snapToAlignment="center" // Snap to the center
+              contentInset={{
+                top: 0,
+                left: 30,
+                bottom: 0,
+                right: 30,
+              }}
             >
               {renderCardItem()}
             </ScrollView>
           </View>
-          <View className="flex flex-row justify-center w-full">
-            <TouchableOpacity onPress={() => openBottomSheet("Income")}>
-              <ButtonRetro bg="bg-green-300" title="Income" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => openBottomSheet("Expense")}>
-              <ButtonRetro bg="bg-red-300" title="Expense" />
-            </TouchableOpacity>
-          </View>
-          <View className="flex flex-col justify-start items-center flex-1 w-full">
-            <View className="flex flex-row justify-between items-center w-full px-5">
+          <View className="flex flex-col justify-start items-center flex-1 space-y-5 w-full">
+            <View className="flex flex-row justify-between items-center w-full">
               <Text className="font-bold text-lg">Last Transaction</Text>
-              <TouchableOpacity>
-                <ButtonRetro bg="bg-yellow-400" title="View All" />
-              </TouchableOpacity>
             </View>
-            <ScrollView className="flex flex-col w-full h-full mt-3 mb-4">
+
+            <View className="flex flex-row justify-center items-center w-full">
+              <FilterTransactionType
+                selected={selectedTrans}
+                updateSelected={onChangeSelectedTrans}
+              />
+            </View>
+            <ScrollView className="flex flex-col w-full h-full mt-3 mb-4 bg-gray-100 rounded-lg">
               {renderListTransaction()}
             </ScrollView>
           </View>

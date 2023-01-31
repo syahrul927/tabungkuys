@@ -1,0 +1,19 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  jit: true,
+  content: ["./App.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
+  theme: {
+    colors: {
+      "retro-yellow": "##fdedba",
+      "retro-dark-yellow": "#c4a865",
+      "retro-purple": "#aa9ef9",
+      "retro-light-gray": "#e6e6e6",
+      "retro-brown": "#876e73",
+      "retro-dark-gray": "#b2b3b3",
+      "retro-black": "#232324",
+      "retro-green": "#c8d8cc",
+    },
+    extend: {},
+  },
+  plugins: [],
+}

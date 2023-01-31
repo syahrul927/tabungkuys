@@ -33,9 +33,9 @@ const TransactionBottomSheet: React.FC<TransactionBottomSheetProps> = props => {
   )
   const getColorType = (tp: string) => {
     if (tp.toLowerCase() === "income") {
-      return "bg-green-300"
+      return "bg-ret-green"
     }
-    return "bg-red-300"
+    return "bg-ret-blossom"
   }
   return (
     <BottomSheetModal
@@ -69,7 +69,7 @@ const TransactionBottomSheet: React.FC<TransactionBottomSheetProps> = props => {
           <InputBottomSheet placeholder="Rp0" name="Amount" />
         </View>
         <TouchableOpacity className="mb-10">
-          <ButtonRetro title="Submit" bg="bg-orange-300" attr="py-3" />
+          <ButtonRetro title="Submit" bg="bg-ret-purple" attr="py-3" />
         </TouchableOpacity>
       </View>
     </BottomSheetModal>
