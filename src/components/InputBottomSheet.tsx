@@ -18,6 +18,7 @@ const InputBottomSheet: React.FC<InputBottomSheet> = props => {
     </View>
   )
 }
+
 export default InputBottomSheet
 const styles = StyleSheet.create({
   textInput: {

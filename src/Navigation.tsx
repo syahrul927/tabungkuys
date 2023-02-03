@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar"
 import { useColorScheme } from "nativewind"
 import { RootStackParamList } from "../type"
 import CardScreen from "./screen/CardScreen"
+import DetailCardScreen from "./screen/DetailCardScreen"
 import HomeScreen from "./screen/HomeScreen"
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -26,6 +27,13 @@ const Navigation = () => {
             headerShown: false,
           }}
           component={CardScreen}
+        />
+        <Stack.Screen
+          name="DetailCard"
+          options={{
+            headerShown: false,
+          }}
+          component={DetailCardScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

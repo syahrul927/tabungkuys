@@ -10,7 +10,6 @@ import {
   View,
   Text,
   ScrollView,
-  TouchableHighlight,
   Dimensions,
 } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
@@ -19,6 +18,7 @@ import FilterTransactionType from "../components/FilterTransactionType"
 import MoneyCard, { MoneyCardProps } from "../components/MoneyCard"
 import SafeLayout from "../components/SafeLayout"
 import TransactionBottomSheet from "../components/TransactionBottomSheet"
+import TransactionBottomSheetSimple from "../components/TransactionBottomSheetSimple"
 import TransactionItem, {
   TransactionItemProps,
 } from "../components/TransactionItem"
@@ -109,14 +109,17 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     return cards.map(item => {
       const id = (Math.random() + 1).toString(36).substring(7)
       return (
-        <TouchableHighlight key={id}>
+        <TouchableOpacity
+          key={id}
+          onPress={() => navigation.navigate("DetailCard", { card: item.name })}
+        >
           <MoneyCard
             name={item.name}
             amount={item.amount}
             incomeAction={openBottomSheet}
             expenseAction={openBottomSheet}
           />
-        </TouchableHighlight>
+        </TouchableOpacity>
       )
     })
   }
@@ -196,7 +199,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
               {renderListTransaction()}
             </ScrollView>
           </View>
-          <TransactionBottomSheet
+          <TransactionBottomSheetSimple
             innerRef={bottomSheetRef}
             type={bottomSheetType}
           />

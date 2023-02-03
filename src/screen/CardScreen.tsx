@@ -16,12 +16,7 @@ const CardScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <SafeLayout className="w-full px-5 bg-white h-full flex flex-col justify-start items-center">
       <View className="flex flex-row justify-center w-full h-fit px-10 ">
-        <MoneyCard
-          name={name || "Your Card Name"}
-          amount={val}
-          incomeAction={() => {}}
-          expenseAction={() => {}}
-        />
+        <MoneyCard name={name || "Your Card Name"} amount={val} />
       </View>
       <View className="flex flex-col w-full justify-around ">
         <InputRetro
