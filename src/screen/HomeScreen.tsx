@@ -155,7 +155,13 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeLayout
         rightComponent={
-          <TouchableOpacity onPress={() => navigation.push("Card")}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.push("Card", {
+                actionType: "New",
+              })
+            }
+          >
             <FontAwesome name="plus-square-o" size={28} />
           </TouchableOpacity>
         }

@@ -42,9 +42,6 @@ const TransactionBottomSheetSimple = forwardRef<
     ),
     []
   )
-  useEffect(() => {
-    console.log(`Type : ${type}`)
-  }, [type, ref])
   return (
     <BottomSheetModal
       ref={ref}

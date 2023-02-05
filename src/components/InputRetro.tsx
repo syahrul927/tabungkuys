@@ -14,7 +14,7 @@ const InputRetro: React.FC<InputRetroProps> = props => {
       )}
       <TextInput
         {...textInputProps}
-        className=" flex bg-gray-100 rounded-lg px-6 py-4 justify-center"
+        className=" flex bg-white rounded-lg px-6 py-4 justify-center"
       />
     </View>
   )

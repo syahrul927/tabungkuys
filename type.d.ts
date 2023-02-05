@@ -1,8 +1,8 @@
 export type RootStackParamList = {
   Home: undefined
-  Card?: CardScreenProps[]
+  Card: CardScreenProps
   DetailCard: DetailCardScreenProps
-  CardMemberScreen: CardMemberScreenProps
+  CardMember: CardMemberScreenProps
 }
 export interface CardMemberScreenProps {
   member: MemberAccount[]
@@ -15,8 +15,9 @@ export interface MemberAccount {
 }
 
 export interface CardScreenProps {
-  id: string
-  name: string
+  actionType: "Update" | "New"
+  id?: string
+  name?: string
 }
 export interface DetailCardScreenProps {
   card: string

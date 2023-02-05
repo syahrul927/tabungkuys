@@ -7,9 +7,8 @@ import ButtonDetail from "../components/ButtonDetail"
 import InputRetro from "../components/InputRetro"
 import SafeLayout from "../components/SafeLayout"
 
-type Props = NativeStackScreenProps<RootStackParamList, "CardMemberScreen">
+type Props = NativeStackScreenProps<RootStackParamList, "CardMember">
 const CardMemberScreen: React.FC<Props> = ({ route, navigation }) => {
-  const { member, actionMember } = route.params
   const shareButton = (type: string) => {
     // todo
   }
@@ -45,7 +44,7 @@ const CardMemberScreen: React.FC<Props> = ({ route, navigation }) => {
           <Text className="font-semibold text-xl">Friends</Text>
           <Text>You can share by choosing friends name !</Text>
         </View>
-        <View>
+        <View className="px-3">
           <InputRetro placeholder="Search by names" name="Search" />
         </View>
       </View>

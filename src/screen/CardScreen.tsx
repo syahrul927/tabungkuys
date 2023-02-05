@@ -11,13 +11,14 @@ import MoneyCard from "../components/MoneyCard"
 import SafeLayout from "../components/SafeLayout"
 
 type Props = NativeStackScreenProps<RootStackParamList, "Card">
-const CardScreen: React.FC<Props> = ({ navigation }) => {
+const CardScreen: React.FC<Props> = ({ navigation, route }) => {
   const [name, setName] = useState<string>("")
+  const { actionType } = route.params
   const actionMember = () => {
     // todo
   }
   const detailOnPress = () => {
-    navigation.push("CardMemberScreen", {
+    navigation.push("CardMember", {
       member: [],
       actionMember,
     })
@@ -25,7 +26,7 @@ const CardScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <SafeLayout
       goBack={navigation.goBack}
-      leftComponent={"New Card"}
+      leftComponent={`${actionType} Card`}
       className="w-full px-5 bg-white h-full flex flex-col justify-start items-center"
     >
       <View className="flex flex-row justify-center w-full h-fit">

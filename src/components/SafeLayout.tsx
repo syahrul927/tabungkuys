@@ -1,4 +1,4 @@
-import { FontAwesome } from "@expo/vector-icons"
+import { Entypo } from "@expo/vector-icons"
 import React, { ReactNode } from "react"
 import { Text, View, ViewProps } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
@@ -20,7 +20,7 @@ const SafeLayout: React.FC<SafeLayoutProps> = props => {
   const renderLeftComponent = () => {
     if (typeof leftComponent === "string") {
       return (
-        <View className="flex z-0 justify-center items-center border-blue-300 w-full flex-1">
+        <View className="flex justify-center items-start w-full flex-1">
           <Text className="text-2xl font-bold">{leftComponent}</Text>
         </View>
       )
@@ -34,11 +34,8 @@ const SafeLayout: React.FC<SafeLayoutProps> = props => {
     >
       <View className="flex flex-row justify-between items-center w-full ">
         {goBack ? (
-          <TouchableOpacity
-            onPress={goBack}
-            className="z-20 absolute -bottom-1/4 "
-          >
-            <FontAwesome name="arrow-left" size={20} />
+          <TouchableOpacity onPress={goBack} className="mr-3">
+            <Entypo name="chevron-left" size={20} />
           </TouchableOpacity>
         ) : null}
         {renderLeftComponent()}

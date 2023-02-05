@@ -33,7 +33,7 @@ const Navigation = () => {
           component={CardScreen}
         />
         <Stack.Screen
-          name="CardMemberScreen"
+          name="CardMember"
           options={{
             headerShown: false,
           }}
