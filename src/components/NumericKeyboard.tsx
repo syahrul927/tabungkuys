@@ -1,30 +1,58 @@
 import { FontAwesome, FontAwesome5 } from "@expo/vector-icons"
-import { ReactNode } from "react"
-import { Text, View } from "react-native"
+import { ReactNode, useCallback, useEffect, useState } from "react"
+import { Text, TouchableHighlight, View } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import ButtonRetro from "./ButtonRetro"
 
 interface NumericKeyboardProps {
   onSubmit: () => void
-  onDelete: () => void
   onChange: (str: string) => void
 }
 const NumericKeyboard: React.FC<NumericKeyboardProps> = ({
   onChange,
   onSubmit,
-  onDelete,
 }) => {
+  const [amount, setAmount] = useState<string>("0")
+  const handleAmountPlus = (str: string) => {
+    const total = amount + str
+    setAmount(total)
+  }
+  const handleAmountMinus = () => {
+    if (amount.length === 1) {
+      setAmount("0")
+      return
+    }
+    setAmount(amount.substring(0, amount.length - 1))
+  }
+  const onChangeCallback = useCallback(
+    (str: string) => {
+      onChange(str)
+    },
+    [onChange]
+  )
+
+  useEffect(() => {
+    onChangeCallback(amount)
+  }, [amount, onChangeCallback])
+  useEffect(() => {
+    setAmount("0")
+  }, [])
   const renderButton = (str: string | ReactNode) => {
+    const id = (Math.random() + 1).toString(36).substring(7)
     return (
-      <View className="rounded-lg  py-5 flex-1 flex justify-center items-center shadow-ret-black shadow">
-        <TouchableOpacity
-          onPress={
-            typeof str === "string" ? () => onChange(str) : () => onDelete()
-          }
-        >
-          <Text className="text-4xl">{str}</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableHighlight
+        activeOpacity={0.6}
+        underlayColor="#DDDDDD"
+        key={id}
+        onPress={
+          typeof str === "string"
+            ? () => handleAmountPlus(str)
+            : () => handleAmountMinus()
+        }
+        className="rounded-lg py-5 flex-1 flex justify-center items-center shadow-ret-black shadow active:text-white"
+      >
+        <Text className="text-4xl">{str}</Text>
+      </TouchableHighlight>
     )
   }
   const renderKeyboard = (start: number) => {
@@ -56,15 +84,14 @@ const NumericKeyboard: React.FC<NumericKeyboardProps> = ({
       <View className="flex flex-row space-x-4 w-full justify-center">
         {renderSubmit()}
       </View>
-      <View>
+      <TouchableOpacity onPress={onSubmit}>
         <ButtonRetro
-          onPress={onSubmit}
           bg="bg-ret-black"
           attr="py-3 flex justify-center items-center"
           textStyle="text-white font-semibold text-lg"
           title="Submit"
         />
-      </View>
+      </TouchableOpacity>
     </View>
   )
 }

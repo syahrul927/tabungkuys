@@ -10,7 +10,7 @@ interface InputBottomSheet extends BottomSheetTextInputProps {
 const InputBottomSheet: React.FC<InputBottomSheet> = props => {
   const { name, titleShow, ...textInputProps } = props
   return (
-    <View className="flex space-y-2">
+    <View className="flex space-y-2 shadow-sm">
       {titleShow && (
         <Text className="text-lg font-bold capitalize">{name}</Text>
       )}

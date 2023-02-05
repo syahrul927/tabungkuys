@@ -8,7 +8,7 @@ const RetroView: React.FC<RetroViewProps> = props => {
   const { children, bg, ...newProps } = props
   return (
     <View className="m-2">
-      <View {...newProps} className={`${bg}`}>
+      <View {...newProps} className={`${bg} shadow-sm`}>
         {children}
       </View>
     </View>

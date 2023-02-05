@@ -4,7 +4,7 @@ import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   TouchableOpacity,
   View,
@@ -17,7 +17,6 @@ import { RootStackParamList } from "../../type"
 import FilterTransactionType from "../components/FilterTransactionType"
 import MoneyCard, { MoneyCardProps } from "../components/MoneyCard"
 import SafeLayout from "../components/SafeLayout"
-import TransactionBottomSheet from "../components/TransactionBottomSheet"
 import TransactionBottomSheetSimple from "../components/TransactionBottomSheetSimple"
 import TransactionItem, {
   TransactionItemProps,
@@ -76,10 +75,12 @@ const dataTransaction: TransactionItemProps[] = [
 ]
 const dataCards: MoneyCardProps[] = [
   {
+    id: "1",
     name: "Bank Sendiri",
     amount: "243500",
   },
   {
+    id: "2",
     name: "Bank Baca",
     amount: "1750000",
   },
@@ -114,6 +115,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           onPress={() => navigation.navigate("DetailCard", { card: item.name })}
         >
           <MoneyCard
+            id={item.id}
             name={item.name}
             amount={item.amount}
             incomeAction={openBottomSheet}
@@ -137,35 +139,36 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       )
     })
   }
-  const filterTransaction = useCallback(
-    (data: TransactionItemProps[]) => {
-      if (selectedTrans.toLowerCase() === "all") return data
-      return data.filter(item => item.type === selectedTrans)
-    },
-    [selectedTrans]
-  )
+  const filterTransaction = useMemo(() => {
+    if (selectedTrans.toLowerCase() === "all") return dataTransaction
+    return dataTransaction.filter(item => item.type === selectedTrans)
+  }, [selectedTrans])
 
   // Set UseEffect
   useEffect(() => {
     setCards(dataCards)
   }, [])
   useEffect(() => {
-    setTransactions(filterTransaction(dataTransaction))
+    setTransactions(filterTransaction)
   }, [selectedTrans, filterTransaction])
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeLayout className="flex flex-col px-5 space-y-8 bg-white justify-start items-center h-full w-full dark:bg-slate-800">
-        <View className="flex flex-row justify-between items-center w-full ">
+      <SafeLayout
+        rightComponent={
+          <TouchableOpacity onPress={() => navigation.push("Card")}>
+            <FontAwesome name="plus-square-o" size={28} />
+          </TouchableOpacity>
+        }
+        leftComponent={
           <Text className="text-3xl font-bold ">
             Cards{" "}
             <Text className="text-xs font-extralight">
               ({dataCards.length})
             </Text>
           </Text>
-          <TouchableOpacity onPress={() => navigation.push("Card")}>
-            <FontAwesome name="plus-square-o" size={28} />
-          </TouchableOpacity>
-        </View>
+        }
+        className="flex flex-col px-5 space-y-8 justify-start items-center"
+      >
         <BottomSheetModalProvider>
           <View className="flex flex-row justify-center mb-10 items-center w-full h-fit ">
             <ScrollView
@@ -195,12 +198,12 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
                 updateSelected={onChangeSelectedTrans}
               />
             </View>
-            <ScrollView className="flex flex-col w-full mt-3 mb-4 bg-gray-100 rounded-lg">
+            <ScrollView className="flex flex-col w-full mt-3 mb-4  rounded-lg">
               {renderListTransaction()}
             </ScrollView>
           </View>
           <TransactionBottomSheetSimple
-            innerRef={bottomSheetRef}
+            ref={bottomSheetRef}
             type={bottomSheetType}
           />
         </BottomSheetModalProvider>

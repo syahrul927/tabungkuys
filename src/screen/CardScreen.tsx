@@ -1,8 +1,10 @@
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useState } from "react"
-import { View } from "react-native"
+import { Text, View } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { RootStackParamList } from "../../type"
+import ButtonDetail from "../components/ButtonDetail"
 import ButtonRetro from "../components/ButtonRetro"
 import InputRetro from "../components/InputRetro"
 import MoneyCard from "../components/MoneyCard"
@@ -11,33 +13,48 @@ import SafeLayout from "../components/SafeLayout"
 type Props = NativeStackScreenProps<RootStackParamList, "Card">
 const CardScreen: React.FC<Props> = ({ navigation }) => {
   const [name, setName] = useState<string>("")
-  const [desc, setDesc] = useState<string>("")
-  const val = "0"
+  const actionMember = () => {
+    // todo
+  }
+  const detailOnPress = () => {
+    navigation.push("CardMemberScreen", {
+      member: [],
+      actionMember,
+    })
+  }
   return (
-    <SafeLayout className="w-full px-5 bg-white h-full flex flex-col justify-start items-center">
-      <View className="flex flex-row justify-center w-full h-fit px-10 ">
-        <MoneyCard name={name || "Your Card Name"} amount={val} />
+    <SafeLayout
+      goBack={navigation.goBack}
+      leftComponent={"New Card"}
+      className="w-full px-5 bg-white h-full flex flex-col justify-start items-center"
+    >
+      <View className="flex flex-row justify-center w-full h-fit">
+        <MoneyCard id={"0"} name={name || "Your Card Name"} amount={"0"} />
       </View>
-      <View className="flex flex-col w-full justify-around ">
-        <InputRetro
-          name="Card Name"
-          titleShow
-          placeholder="bank example bank"
-          onChangeText={setName}
-        />
-        <InputRetro
-          name="Description"
-          titleShow
-          placeholder="about this card"
-          onChangeText={setDesc}
+      <View className="flex px-5 flex-col w-full justify-around ">
+        <View className="m-3">
+          <InputRetro
+            titleShow
+            name="Card Name"
+            placeholder="Your Card Name"
+            onChangeText={e => setName(e)}
+          />
+        </View>
+        <ButtonDetail
+          icon={<MaterialIcons name="people" size={14} />}
+          bg="bg-ret-green"
+          name="Members"
+          onPress={detailOnPress}
         />
       </View>
-      <View className="flex flex-row flex-1">
+      <View className="flex w-full h- rounded-lg px-5">
         <TouchableOpacity onPress={navigation.goBack}>
-          <ButtonRetro title="Cancel" bg="bg-ret-yellow" attr="w-full" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={navigation.goBack}>
-          <ButtonRetro title="Submit" bg="bg-ret-purple" attr=" w-full" />
+          <ButtonRetro
+            bg="bg-ret-black"
+            attr="py-3 flex justify-center items-center"
+            textStyle="text-white font-semibold text-lg"
+            title="Save"
+          />
         </TouchableOpacity>
       </View>
     </SafeLayout>

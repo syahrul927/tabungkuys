@@ -1,26 +1,28 @@
-import { BottomSheetBackdrop, BottomSheetModal } from "@gorhom/bottom-sheet"
-import { BottomSheetModalMethods } from "@gorhom/bottom-sheet/lib/typescript/types"
-import React, { useCallback, useMemo, useState } from "react"
+import {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetModal,
+} from "@gorhom/bottom-sheet"
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react"
 import { Text, View } from "react-native"
 import MoneyFormat from "./MoneyFormat"
 import NumericKeyboard from "./NumericKeyboard"
 
 interface TransactionBottomSheetSimpleProps {
   type: string
-  innerRef: React.RefObject<BottomSheetModalMethods>
 }
-const TransactionBottomSheetSimple: React.FC<
+const TransactionBottomSheetSimple = forwardRef<
+  BottomSheetModal,
   TransactionBottomSheetSimpleProps
-> = props => {
+>((props, ref) => {
   const [amount, setAmount] = useState<string>("0")
-  const handleAmountPlus = (str: string) => {
-    const total = amount + str
-    setAmount(total)
-  }
-  const handleAmountMinus = () => {
-    setAmount(amount.substring(0, amount.length - 2))
-  }
-  const { type, innerRef } = props
+  const { type } = props
 
   // variables
   const snapPoints = useMemo(() => ["70%", "80%"], [])
@@ -28,27 +30,24 @@ const TransactionBottomSheetSimple: React.FC<
   // callbacks
   const handleSheetChanges = useCallback(
     (index: number) => {
-      if (index < 1 && innerRef) {
-        innerRef.current?.close()
+      if (index < 1 && ref && typeof ref !== "function") {
+        ref.current?.close()
       }
     },
-    [innerRef]
+    [ref]
   )
   const renderBackdrop = useCallback(
-    (drop: any) => (
+    (drop: BottomSheetBackdropProps) => (
       <BottomSheetBackdrop {...drop} disappearsOnIndex={0} appearsOnIndex={1} />
     ),
     []
   )
-  const getColorType = (tp: string) => {
-    if (tp.toLowerCase() === "income") {
-      return "bg-ret-green"
-    }
-    return "bg-ret-blossom"
-  }
+  useEffect(() => {
+    console.log(`Type : ${type}`)
+  }, [type, ref])
   return (
     <BottomSheetModal
-      ref={innerRef}
+      ref={ref}
       index={1}
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
@@ -79,11 +78,10 @@ const TransactionBottomSheetSimple: React.FC<
         </View>
         <NumericKeyboard
           onSubmit={() => console.log("submit")}
-          onChange={handleAmountPlus}
-          onDelete={handleAmountMinus}
+          onChange={setAmount}
         />
       </View>
     </BottomSheetModal>
   )
-}
+})
 export default TransactionBottomSheetSimple

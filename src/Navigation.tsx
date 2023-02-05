@@ -1,8 +1,12 @@
+import { FontAwesome } from "@expo/vector-icons"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { StatusBar } from "expo-status-bar"
 import { useColorScheme } from "nativewind"
+import { Children } from "react"
+import { Text, TouchableOpacity, View } from "react-native"
 import { RootStackParamList } from "../type"
+import CardMemberScreen from "./screen/CardMemberScreen"
 import CardScreen from "./screen/CardScreen"
 import DetailCardScreen from "./screen/DetailCardScreen"
 import HomeScreen from "./screen/HomeScreen"
@@ -27,6 +31,13 @@ const Navigation = () => {
             headerShown: false,
           }}
           component={CardScreen}
+        />
+        <Stack.Screen
+          name="CardMemberScreen"
+          options={{
+            headerShown: false,
+          }}
+          component={CardMemberScreen}
         />
         <Stack.Screen
           name="DetailCard"

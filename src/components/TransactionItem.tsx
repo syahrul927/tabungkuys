@@ -1,6 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons"
 import React from "react"
 import { Text, TouchableOpacity, View } from "react-native"
+import { ColorsConst } from "../utils/ColorConst"
 import { moneyFormatter } from "../utils/StringUtils"
 import RetroView from "./RetroView"
 import UserIcon from "./UserIcon"
@@ -18,7 +19,7 @@ const TransactionItem: React.FC<TransactionItemProps> = props => {
   return (
     <TouchableOpacity>
       <RetroView
-        bg="bg-gray-100"
+        bg="bg-white"
         className="flex rounded-lg flex-row justify-start space-x-3 px-3 py-3"
       >
         <UserIcon name={from} />
