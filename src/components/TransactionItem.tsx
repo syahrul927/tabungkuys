@@ -20,6 +20,7 @@ const TransactionItem: React.FC<TransactionItemProps> = props => {
     <TouchableOpacity>
       <RetroView
         bg="bg-white"
+        margin
         className="flex rounded-lg flex-row justify-start space-x-3 px-3 py-3"
       >
         <UserIcon name={from} />

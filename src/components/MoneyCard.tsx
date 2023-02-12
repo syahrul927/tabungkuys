@@ -29,6 +29,7 @@ const MoneyCard = ({
     <View key={id} style={styles.container}>
       <RetroView
         bg="bg-ret-yellow"
+        margin
         className={`flex flex-col w-full h-full space-y-2 justify-around items-start py-2 px-5 rounded-2xl `}
       >
         <Text className="text-xl font-bold text-black">{name}</Text>

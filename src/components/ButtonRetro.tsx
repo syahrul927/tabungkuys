@@ -15,7 +15,7 @@ const ButtonRetro: React.FC<ButtonRetroProps> = ({
   textStyle,
 }) => {
   return (
-    <RetroView bg={bg} className={`rounded-md px-4 py-1 ${attr}`}>
+    <RetroView bg={bg} margin className={`rounded-md px-4 py-1 ${attr}`}>
       <Text className={textStyle}>{title}</Text>
     </RetroView>
   )

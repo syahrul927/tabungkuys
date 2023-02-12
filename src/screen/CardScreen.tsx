@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import React, { useState } from "react"
 import { Text, View } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
-import { RootStackParamList } from "../../type"
+import { MemberAccount, RootStackParamList } from "../../type"
 import ButtonDetail from "../components/ButtonDetail"
 import ButtonRetro from "../components/ButtonRetro"
 import InputRetro from "../components/InputRetro"
@@ -20,14 +20,13 @@ const CardScreen: React.FC<Props> = ({ navigation, route }) => {
   const detailOnPress = () => {
     navigation.push("CardMember", {
       member: [],
-      actionMember,
     })
   }
   return (
     <SafeLayout
       goBack={navigation.goBack}
       leftComponent={`${actionType} Card`}
-      className="w-full px-5 bg-white h-full flex flex-col justify-start items-center"
+      className="w-full px-5 h-full flex flex-col justify-start items-center"
     >
       <View className="flex flex-row justify-center w-full h-fit">
         <MoneyCard id={"0"} name={name || "Your Card Name"} amount={"0"} />

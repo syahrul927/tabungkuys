@@ -20,6 +20,7 @@ const ButtonDetail: React.FC<ButtonDetailProps> = ({
     <TouchableOpacity onPress={onPress}>
       <RetroView
         bg={bg}
+        margin
         className="p-3 rounded-xl flex flex-row space-x-3 items-center"
       >
         <View className="bg-white flex justify-center items-center w-7 h-7 rounded-full">

@@ -5,8 +5,7 @@ export type RootStackParamList = {
   CardMember: CardMemberScreenProps
 }
 export interface CardMemberScreenProps {
-  member: MemberAccount[]
-  actionMember: () => void
+  member?: MemberAccount[]
 }
 
 export interface MemberAccount {
