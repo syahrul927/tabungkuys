@@ -1,12 +1,8 @@
-import {
-  AntDesign,
-  FontAwesome,
-  FontAwesome5,
-  Ionicons,
-} from "@expo/vector-icons"
+import { AntDesign, FontAwesome } from "@expo/vector-icons"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { ScrollView, Text, View } from "react-native"
+import { TextInput } from "react-native-gesture-handler"
 import { RootStackParamList } from "../../type"
 import AccountSearchItem, {
   AccountSearchItemProps,
@@ -21,58 +17,59 @@ let list: AccountSearchItemProps[] = [
     name: "Renaldi Dwi Iwan",
     id: "rey123good",
     onPress: (str: string) => {
-      console.log(str)
+      return str
     },
   },
   {
     name: "Nauval Purnomo Sidi",
     id: "nauval001",
     onPress: (str: string) => {
-      console.log(str)
+      return str
     },
   },
   {
     name: "Tegar Machfudzi",
     id: "egarfudzi",
     onPress: (str: string) => {
-      console.log(str)
+      return str
     },
   },
   {
     name: "Syahrul Ataufik",
     id: "syahrul927",
     onPress: (str: string) => {
-      console.log(str)
+      return str
     },
   },
   {
     name: "Ulfa Dwi Nurul Octa",
     id: "ulfadwi001",
     onPress: (str: string) => {
-      console.log(str)
+      return str
     },
   },
 ]
 type Props = NativeStackScreenProps<RootStackParamList, "CardMember">
 const CardMemberScreen: React.FC<Props> = ({ navigation }) => {
   const [input, setInput] = useState<string>("")
+  const inputRef = useRef<TextInput>(null)
   const searchKey = useDebounce(input, 333)
   const [loading, setLoading] = useState(false)
-  const [members, setMembers] = useState<AccountSearchItemProps[]>(list)
+  const [oriMembers, setOriMembers] = useState<AccountSearchItemProps[]>(list)
+  const [members, setMembers] = useState<AccountSearchItemProps[]>([])
 
   const shareButton = (type: string) => {
-    // todo
+    return type
   }
 
   const handleInvite = (id: string) => {
-    const newMembers = members.map(item => {
+    const newMembers = oriMembers.map(item => {
       if (item.id === id) {
         return { ...item, invited: true }
       }
       return item
     })
-    setMembers(newMembers)
-    list = [...newMembers]
+    setOriMembers(newMembers)
   }
 
   const listMemberSorted = useMemo(() => {
@@ -93,20 +90,22 @@ const CardMemberScreen: React.FC<Props> = ({ navigation }) => {
     ))
   }
   useEffect(() => {
-    setLoading(true)
-    setTimeout(() => setLoading(false), 500)
-    const newMembers = list.filter(item =>
-      item.name.toLowerCase().includes(searchKey.toLowerCase())
-    )
-    setMembers(newMembers)
-  }, [searchKey])
+    if (searchKey) {
+      setLoading(true)
+      setTimeout(() => setLoading(false), 500)
+      const newMembers = oriMembers.filter(item =>
+        item.name.toLowerCase().includes(searchKey.toLowerCase())
+      )
+      setMembers(newMembers)
+    }
+  }, [searchKey, oriMembers])
   return (
     <SafeLayout
       leftComponent={"Member"}
       goBack={() => navigation.goBack()}
       className="flex flex-col px-5 justify-start items-center"
     >
-      <View className="flex flex-col w-full">
+      <View className={`flex flex-col w-full`}>
         <Text className="text-xl font-semibold my-5">Share With Friends</Text>
         <ButtonDetail
           icon={<FontAwesome name="twitter" size={14} />}
@@ -127,13 +126,14 @@ const CardMemberScreen: React.FC<Props> = ({ navigation }) => {
           onPress={() => shareButton("facebook")}
         />
       </View>
-      <View className="flex-1 flex-col w-full space-y-3 ">
+      <View className="flex-1 flex-col w-full space-y-3 mb-5 ">
         <View className="flex flex-col space-y-2">
           <Text className="font-semibold text-xl">Friends</Text>
           <Text>You can share by choosing friends name !</Text>
         </View>
         <View className="flex flex-col space-y-3">
           <InputRetro
+            ref={inputRef}
             placeholder="Search by names"
             name="Search"
             onChangeText={e => setInput(e)}
@@ -151,7 +151,7 @@ const CardMemberScreen: React.FC<Props> = ({ navigation }) => {
             </View>
           )}
           {searchKey ? (
-            <ScrollView className="flex flex-col w-full">
+            <ScrollView className="flex flex-col w-full h-[80%]">
               {renderListMember(listMemberSorted)}
             </ScrollView>
           ) : (
