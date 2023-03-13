@@ -4,8 +4,8 @@ import { moneyFormatter } from "../utils/StringUtils"
 
 interface MoneyFormatProps {
   amount: string
-  sizeRp: string
-  sizeMon: string
+  sizeRp?: string
+  sizeMon?: string
 }
 const MoneyFormat: React.FC<MoneyFormatProps> = props => {
   const { amount, sizeRp, sizeMon } = props

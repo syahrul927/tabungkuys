@@ -15,6 +15,7 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { RootStackParamList } from "../../type"
 import FilterTransactionType from "../components/FilterTransactionType"
+import ListTransactionItem from "../components/ListTransactionItem"
 import MoneyCard, { MoneyCardProps } from "../components/MoneyCard"
 import SafeLayout from "../components/SafeLayout"
 import TransactionBottomSheetSimple from "../components/TransactionBottomSheetSimple"
@@ -125,20 +126,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       )
     })
   }
-  const renderListTransaction = () => {
-    return transactions.map(item => {
-      const id = (Math.random() + 1).toString(36).substring(7)
-      return (
-        <TransactionItem
-          amount={item.amount}
-          type={item.type}
-          from={item.from}
-          date={item.date}
-          key={id}
-        />
-      )
-    })
-  }
   const filterTransaction = useMemo(() => {
     if (selectedTrans.toLowerCase() === "all") return dataTransaction
     return dataTransaction.filter(item => item.type === selectedTrans)
@@ -194,18 +181,17 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             </ScrollView>
           </View>
           <View className="flex flex-col justify-start items-center flex-1 space-y-5 w-full">
-            <View className="flex flex-row justify-between items-center w-full">
-              <Text className="font-bold text-lg">Last Transaction</Text>
-            </View>
-
             <View className="flex flex-row justify-center items-center w-full">
               <FilterTransactionType
                 selected={selectedTrans}
                 updateSelected={onChangeSelectedTrans}
               />
             </View>
+            <View className="flex flex-row justify-between items-center w-full">
+              <Text className="font-bold text-lg">Recent Transaction</Text>
+            </View>
             <ScrollView className="flex flex-col w-full mt-3 mb-4  rounded-lg">
-              {renderListTransaction()}
+              <ListTransactionItem list={transactions} />
             </ScrollView>
           </View>
           <TransactionBottomSheetSimple
